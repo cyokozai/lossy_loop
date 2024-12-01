@@ -10,17 +10,18 @@ import (
 )
 
 func main() {
-	var inputPath, outputPath string
+	inputDir := "./input/"
+	outputDir := "./output/"
 
-	// ユーザーから入力画像のパスを取得
-	inputPath 
-	
-	// 出力画像のパス
-	outputPath := "./out/" + "image_" + time.Now().Format("20060102_150405") + ".jpg"
+	// 入力ディレクトリ内の全てのファイルを取得
+	files, err := os.ReadDir(inputDir)
+	if err != nil {
+		log.Fatalf("Failed to read input directory: %v", err)
+	}
 
 	// コマンドライン引数から品質を取得（デフォルトは80）
 	quality := 80
-	if len(os.Args) == 1 {
+	if len(os.Args) > 1 {
 		if os.Args[1] == "random" {
 			quality = 1 + int(time.Now().UnixNano()) % 100
 		} else {
@@ -31,19 +32,26 @@ func main() {
 		}
 	}
 
-	// 画像をデコード
-	img, err := DecodeImage(inputPath, filepath.Ext(inputPath))
-	if err != nil {
-		log.Fatalf("Failed to decode image: %v", err)
+	for _, file := range files {
+		if !file.IsDir() {
+			inputPath := filepath.Join(inputDir, file.Name())
+			outputPath := filepath.Join(outputDir, "image_"+time.Now().Format("20060102_150405")+".jpg")
+
+			// 画像をデコード
+			img, err := DecodeImage(inputPath, filepath.Ext(inputPath))
+			if err != nil {
+				log.Printf("Failed to decode image %v: %v", inputPath, err)
+				continue
+			}
+
+			// 画像をエンコードして保存
+			err = SaveImage(outputPath, img, quality)
+			if err != nil {
+				log.Printf("Failed to save image %v: %v", outputPath, err)
+				continue
+			}
+
+			log.Printf("Image successfully compressed and saved as %v", outputPath)
+		}
 	}
-
-	// 画像をエンコードして保存
-	err = SaveImage(outputPath, img, quality)
-	if err != nil {
-		log.Fatalf("Failed to save image: %v", err)
-	}
-
-	log.Printf("Image successfully compressed and saved as %v", outputPath)
-
-	return 0
 }
