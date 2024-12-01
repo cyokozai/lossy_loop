@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     working_dir: /root
     volumes:
-      - ./out:/root/src/out
+      - ./output:/root/src/output
     networks:
       - default
     environment:

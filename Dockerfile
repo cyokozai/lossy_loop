@@ -20,4 +20,6 @@ COPY ./${dir}/*.go /root/${dir}
 
 RUN apt -y update && apt -y upgrade && go mod download && go mod verify && go build -v -o lossyloop
 
+COPY ./input/ /root/${dir}/input/
+
 CMD ["lossyloop 90"]

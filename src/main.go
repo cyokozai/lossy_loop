@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	inputDir := "./input/"
+	inputDir  := "./input/"
 	outputDir := "./output/"
 
 	// 入力ディレクトリ内の全てのファイルを取得
