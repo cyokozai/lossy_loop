@@ -22,7 +22,7 @@ jobs:
         go-version: '1.23.3'
 
     - name: Build
-      run: cd ./src && go mod init github.com/cyokozai/lossyloop && go mod tidy && go build -v -o lossyloop && ./lossyloop
+      run: go mod init github.com/cyokozai/lossyloop ./src/ && go mod tidy ./src/ && go build ./src/ -v -o ./lossyloop && ./lossyloop
 
     - name: Test
-      run: cd ./src && go mod init github.com/cyokozai/lossyloop && go mod tidy && go test -v main.go
+      run: go mod init github.com/cyokozai/lossyloop ./src/ && go mod tidy ./src/ && go test -v ./src/main.go
