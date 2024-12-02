@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"os"
@@ -44,6 +45,20 @@ func main() {
 		fmt.Println("         : random (random quality)")
 	}
 
+	// 非可逆変換回数
+	maxIter := 1000
+	if len(os.Args) > 2 {
+		if os.Args[2] == "random" {
+			maxIter = 1 + int(time.Now().UnixNano()) % 1000
+		} else {
+			q, err := strconv.Atoi(os.Args[2])
+			if err == nil && q >= 1 && q <= 1000 {
+				log.Fatalf("Max iteration must be between 1 and 1000")
+				maxIter = q
+			}
+		}
+	}
+
 	fmt.Printf("Quality: %v\n", quality)
 
 	for _, file := range files {
@@ -56,34 +71,48 @@ func main() {
 		img, err := DecodeImage(inputPath, filepath.Ext(inputPath))
 		if err != nil {
 			log.Printf("Failed to decode image %v: %v", inputPath, err)
+
 			continue
 		}
 
 		// 1000回非可逆変換
-		for i := 0; i < 1000; i++ {
-			tempOutputPath := filepath.Join(outputDir, "temp_image.jpg")
+		for i := 0; i < maxIter; i++ {
+			var buf bytes.Buffer
 			
-			err = SaveImage(tempOutputPath, img, quality)
+			// 画像をエンコード
+			err = EncodeJPEG(&buf, img, quality)
 			if err != nil {
-				log.Printf("Failed to save image during iteration %v: %v", i, err)
+				log.Printf("Failed to encode image during iteration %v: %v", i, err)
+
 				break
 			}
-
-			img, err = DecodeImage(tempOutputPath, filepath.Ext(tempOutputPath))
+			
+			// 画像をデコード
+			img, err = DecodeImageFromReader(&buf, ".jpg")
 			if err != nil {
 				log.Printf("Failed to decode image during iteration %v: %v", i, err)
+				
 				break
 			}
 		}
 
-		// 最終結果を保存
-		err = SaveImage(outputPath, img, quality)
+		outputFile, err := os.Create(outputPath)
 		if err != nil {
-			log.Printf("Failed to save image %v: %v", outputPath, err)
+			log.Printf("Failed to create output file: %v", err)
+
 			continue
 		}
+		defer outputFile.Close()
 
-		fmt.Printf("Image successfully compressed and saved as %v\n", outputPath)
-		log.Printf("Image successfully compressed and saved as %v", outputPath)
+		// 最終結果を保存
+		err = SaveImage(outputFile, img, 80)
+		if err != nil {
+			log.Printf("Failed to save image %v: %v", outputPath, err)
+
+			continue
+		} else {
+			fmt.Printf("Image successfully compressed and saved as %v\n", outputPath)
+			log.Printf("Image successfully compressed and saved as %v", outputPath)
+		}
 	}
 }
