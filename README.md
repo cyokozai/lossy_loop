@@ -62,5 +62,5 @@ Explore the beauty of destruction—one pixel at a time!
 ## Example
 
 <img align="left"   src="./input/test.jpg" alt="logo" width=200cm>
-<img align="center" src="./icon/export.png" alt="logo" width=200cm>
+<img align="center" src="./icon/export.png" alt="logo" width=150cm>
 <img align="center"  src="./output/image-test.jpg" alt="logo" width=200cm>
