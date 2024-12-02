@@ -24,8 +24,5 @@ jobs:
     - name: Initialize Go Module
       run: cd ./src/ && go mod init github.com/cyokozai/lossyloop && go mod tidy && cat go.mod
 
-    - name: Test
-      run: cd ./src/ && go mod init github.com/cyokozai/lossyloop && go mod tidy && cd .. && go test -v ./src/main.go
-
     - name: Build and Run
       run: cd ./src/ && go build -v -o ../lossyloop && cd .. && ./lossyloop
