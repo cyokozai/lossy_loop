@@ -25,4 +25,4 @@ jobs:
       run: cd ./src/ && go mod init github.com/cyokozai/lossyloop && go mod tidy && cat go.mod
 
     - name: Build and Run
-      run: cd ./src/ && go build -v -o ../lossyloop && cd .. && ./lossyloop
+      run: cd ./src/ && go build -v -o ../lossyloop && cd .. && ./lossyloop 10 10 jpeg
