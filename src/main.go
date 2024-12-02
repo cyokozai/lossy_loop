@@ -67,7 +67,7 @@ func main() {
 
 	for _, file := range files {
 		inputPath  := filepath.Join(inputDir, file.Name())
-		outputPath := filepath.Join(outputDir, "image_"+time.Now().Format("20060102_150405")+".jpg")
+		outputPath := filepath.Join(outputDir, "image_"+time.Now().Format("20060102_150405") + "." + method)
 
 		log.Printf("Compressing %v with quality %v and %v iterations\n", file.Name(), quality, maxIter)
 
