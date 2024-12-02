@@ -114,7 +114,7 @@ func main() {
 		}
 
 		// 最終結果を保存
-		err = SaveImage(outputPath, img, 80)
+		err = SaveImage(outputPath, img, 100)
 		if err != nil {
 			log.Printf("Failed to save image %v: %v", outputPath, err)
 

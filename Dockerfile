@@ -22,4 +22,4 @@ RUN apt -y update && apt -y upgrade && go mod init github.com/cyokozai/lossyloop
 
 COPY ./input/* /root/${dir}/input/
 
-CMD ["./lossyloop", "random", "100"]
+CMD ["./lossyloop", "70", "1000"]
