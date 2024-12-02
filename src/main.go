@@ -109,7 +109,7 @@ func main() {
 			
 			if method == "webp" {
 				method = "jpg"
-			} else if method == "jpg" {
+			} else if method == "jpg" || method == "jpeg" {
 				method = "webp"
 			} else {
 				log.Fatalf("Invalid format: %v", method)
@@ -128,7 +128,7 @@ func main() {
 
 		// 結果を保存
 		SaveImage(outputPath, img, 100, method)
-		
+
 		log.Printf("Image successfully compressed and saved as %v", outputPath)
 	}
 }
