@@ -1,0 +1,14 @@
+services:
+  lossyloop:
+    container_name: lossyloop-go
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /root/src
+    volumes:
+      - ./output:/root/src/output
+    networks:
+      - default
+    environment:
+      - TZ=Asia/Tokyo
