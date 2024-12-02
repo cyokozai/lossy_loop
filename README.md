@@ -13,6 +13,39 @@ Unleash the power of compression with **Lossy Loop**!
                     |___/                 |_|   
 ```
 
+## About
+
 This app repeatedly compresses your uploaded JPG image up to 1000 times, showcasing the fascinating effects of lossy compression.  
 Watch as your photo evolves (or devolves) into a cascade of artifacts and degraded pixels.  
 Explore the beauty of destruction—one pixel at a time!
+
+## Installation
+
+### Go (1.23.3)
+
+- Install Golang [Latest](https://go.dev/dl/)
+  - [Windows](https://go.dev/dl/go1.23.3.windows-amd64.msi)
+  - [macOS](https://go.dev/dl/go1.23.3.darwin-amd64.pkg)
+  - [Linux](https://go.dev/dl/go1.23.3.linux-amd64.tar.gz)
+
+### Docker
+
+- [Docker Desktop](https://docs.docker.com/get-started/get-docker/)
+- [Docker CE (Ubuntu)](https://docs.docker.jp/engine/installation/linux/docker-ce/ubuntu.html)
+
+## Usage
+
+### Go
+
+- Run `go run main.go`
+
+
+### Docker
+
+- Run `docker compose`
+
+## Example
+
+<img align="left"   src="./input/test.jpg" alt="logo" width=200cm>
+<img align="center" src="./icon/export.png" alt="logo" width=200cm>
+<img align="center"  src="./output/image-test.jpg" alt="logo" width=200cm>
