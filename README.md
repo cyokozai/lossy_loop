@@ -37,12 +37,25 @@ Explore the beauty of destruction—one pixel at a time!
 
 ### Go
 
-- Run `go run main.go`
-
+- Save your photo in `./input`
+- Set up
+  - `go mod init github.com/cyokozai/lossyloop`
+  - `go mod tidy`
+- Run code
+  - `go run main.go [quality] [method]`
+    - quality: `1 ~ 100` (default: 10) or `random`
+    - method : `jpg` (`jpeg`) or `webp` (default: jpg)
+- Build code
+  - `go build -v -o lossyloop`
+  - `./lossyloop [quality] [method]`
+    - quality: `1 ~ 100` (default: 10) or `random`
+    - method : `jpg` (`jpeg`) or `webp` (default: jpg)
 
 ### Docker
 
-- Run `docker compose`
+- Save your photo in `./input`
+- Compose up
+  - `docker compose up -d --build`
 
 ## Example
 

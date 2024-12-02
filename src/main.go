@@ -41,10 +41,11 @@ func main() {
 			}
 		}
 	} else {
-		fmt.Println("Usage: go run main.go [quality]")
+		fmt.Println("Usage: go run main.go [quality] [method]")
 		fmt.Println("     : ./lussyloop [quality]")
 		fmt.Println("  quality: 1 ~ 100 (default: 80)")
 		fmt.Println("         : random (random quality)")
+		fmt.Println("  method : jpg (jpeg) or webp (default: jpg)")
 	}
 
 	// 非可逆圧縮回数
