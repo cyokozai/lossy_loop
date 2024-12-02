@@ -19,10 +19,10 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
-        go-version: '1.23.3'
+        go-version: '1.23'
 
     - name: Build
-      run: cd ./src/ && go mod init github.com/cyokozai/lossyloop && go mod tidy && cd .. && go build ./src/ -v -o ./lossyloop && ./lossyloop
+      run: cd ./src/ && go mod init github.com/cyokozai/lossyloop && go mod tidy && cd .. && go build -v -o ./src/lossyloop && ./lossyloop
 
     - name: Test
       run: cd ./src/ && go mod init github.com/cyokozai/lossyloop && go mod tidy && cd .. && go test -v ./src/main.go
