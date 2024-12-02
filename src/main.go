@@ -96,16 +96,8 @@ func main() {
 			}
 		}
 
-		outputFile, err := os.Create(outputPath)
-		if err != nil {
-			log.Printf("Failed to create output file: %v", err)
-
-			continue
-		}
-		defer outputFile.Close()
-
 		// 最終結果を保存
-		err = SaveImage(outputFile, img, 80)
+		err = SaveImage(outputPath, img, 80)
 		if err != nil {
 			log.Printf("Failed to save image %v: %v", outputPath, err)
 
