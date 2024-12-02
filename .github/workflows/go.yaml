@@ -21,8 +21,11 @@ jobs:
       with:
         go-version: '1.23'
 
+    - name: Initialize Go Module
+      run: cd ./src/ && go mod init github.com/cyokozai/lossyloop && go mod tidy
+
     - name: Build
-      run: cd ./src/ && go mod init github.com/cyokozai/lossyloop && go mod tidy && cd .. && go build -v -o ./src/lossyloop && ./lossyloop
+      run: cd ./src/ && go build -v -o ../lossyloop && cd ..
 
     - name: Test
-      run: cd ./src/ && go mod init github.com/cyokozai/lossyloop && go mod tidy && cd .. && go test -v ./src/main.go
+      run: cd ./src/ && go test -v ./main.go
