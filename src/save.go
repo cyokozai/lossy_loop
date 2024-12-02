@@ -1,25 +1,27 @@
 package main
 
 import (
-	"fmt"
-	"image"
+	"log"
 	"os"
+	"image"
 )
 
 // SaveImage: 指定されたパスに画像を保存します
-func SaveImage(path string, img image.Image, quality int) error {
+func SaveImage(path string, img image.Image, quality int, method string) {
 	// 出力ファイルを作成
 	file, err := os.Create(path)
 	if err != nil {
-		return fmt.Errorf("failed to create output file: %w", err)
+		log.Println("Failed to create output file:", err)
+		return
 	}
 	defer file.Close()
 
-	// JPEG形式で保存
-	err = EncodeJPEG(file, img, quality)
+	// 画像をエンコードしてファイルに書き込む
+	err = Encode(file, img, quality, method)
 	if err != nil {
-		return fmt.Errorf("failed to encode image: %w", err)
+		log.Println("Failed to encode image:", err)
+		return
 	}
 
-	return nil
+	log.Println("Image successfully saved:", path)
 }

@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
+	"io"
+	"os"
 	"image"
 	"image/jpeg"
 	"image/png"
-	"io"
-	"os"
 	"github.com/chai2010/webp"
 )
 

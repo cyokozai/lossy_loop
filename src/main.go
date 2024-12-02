@@ -47,7 +47,7 @@ func main() {
 		fmt.Println("         : random (random quality)")
 	}
 
-	// 非可逆変換回数
+	// 非可逆圧縮回数
 	maxIter := 10
 	if len(os.Args) > 2 {
 		if os.Args[2] == "random" {
@@ -62,6 +62,8 @@ func main() {
 		}
 	}
 
+	method := os.Args[3]
+
 	for _, file := range files {
 		inputPath  := filepath.Join(inputDir, file.Name())
 		outputPath := filepath.Join(outputDir, "image_"+time.Now().Format("20060102_150405")+".jpg")
@@ -69,11 +71,12 @@ func main() {
 		log.Printf("Compressing %v with quality %v and %v iterations\n", file.Name(), quality, maxIter)
 
 		// プログレスバーの初期化
+		example := "[" + file.Name() + " -> " + outputPath + "]"
 		bar := progressbar.NewOptions(maxIter,
-			progressbar.OptionSetWidth(50),                // プログレスバーの幅
-			progressbar.OptionSetPredictTime(true),        // 残り時間の予測
-			progressbar.OptionSetDescription(file.Name()), // バーの前に表示する説明
-			progressbar.OptionSetRenderBlankState(true),   // 空の状態でも表示
+			progressbar.OptionSetWidth(50),              // プログレスバーの幅
+			progressbar.OptionSetPredictTime(true),      // 残り時間の予測
+			progressbar.OptionSetDescription(example), 	 // バーの前に表示する説明
+			progressbar.OptionSetRenderBlankState(true), // 空の状態でも表示
 		)
 
 		// 画像をデコード
@@ -89,7 +92,7 @@ func main() {
 			var buf bytes.Buffer
 			
 			// 画像をエンコード
-			err = EncodeJPEG(&buf, img, quality)
+			err = Encode(&buf, img, quality, method)
 			if err != nil {
 				log.Printf("Failed to encode image during iteration %v: %v", i, err)
 
@@ -97,10 +100,20 @@ func main() {
 			}
 			
 			// 画像をデコード
-			img, err = DecodeImageFromReader(&buf, ".jpg")
+			img, err = DecodeImageFromReader(&buf, "." + method)
 			if err != nil {
 				log.Printf("Failed to decode image during iteration %v: %v", i, err)
 				
+				break
+			}
+			
+			if method == "webp" {
+				method = "jpg"
+			} else if method == "jpg" {
+				method = "webp"
+			} else {
+				log.Fatalf("Invalid format: %v", method)
+
 				break
 			}
 
@@ -113,14 +126,9 @@ func main() {
 			}
 		}
 
-		// 最終結果を保存
-		err = SaveImage(outputPath, img, 100)
-		if err != nil {
-			log.Printf("Failed to save image %v: %v", outputPath, err)
-
-			continue
-		} else {
-			log.Printf("Image successfully compressed and saved as %v", outputPath)
-		}
+		// 結果を保存
+		SaveImage(outputPath, img, 100, method)
+		
+		log.Printf("Image successfully compressed and saved as %v", outputPath)
 	}
 }
