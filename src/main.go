@@ -41,10 +41,10 @@ func main() {
 			}
 		}
 	} else {
-		fmt.Println("Usage: go run main.go [quality] [method]")
+		fmt.Println("Usage: go run main.go [quality] [iteration] [method]")
 		fmt.Println("     : ./lussyloop [quality]")
-		fmt.Println("  quality: 1 ~ 100 (default: 80)")
-		fmt.Println("         : random (random quality)")
+		fmt.Println("  quality: 1 ~ 100 (default: 10) or random")
+		fmt.Println("  iteration: 1 ~ 1000 (default: 200)")
 		fmt.Println("  method : jpg (jpeg) or webp (default: jpg)")
 	}
 

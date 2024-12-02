@@ -42,14 +42,16 @@ Explore the beauty of destruction—one pixel at a time!
   - `go mod init github.com/cyokozai/lossyloop`
   - `go mod tidy`
 - Run code
-  - `go run main.go [quality] [method]`
+  - `go run main.go [quality] [iteration] [method]`
     - quality: `1 ~ 100` (default: 10) or `random`
-    - method : `jpg` (`jpeg`) or `webp` (default: jpg)
+    - iteration: `1 ~ 1000` (default: 200)
+    - method: `jpg` (`jpeg`) or `webp` (default: jpg)
 - Build code
   - `go build -v -o lossyloop`
   - `./lossyloop [quality] [method]`
     - quality: `1 ~ 100` (default: 10) or `random`
-    - method : `jpg` (`jpeg`) or `webp` (default: jpg)
+    - iteration: `1 ~ 1000` (default: 200)
+    - method: `jpg` (`jpeg`) or `webp` (default: jpg)
 
 ### Docker
 
