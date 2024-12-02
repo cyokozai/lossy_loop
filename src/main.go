@@ -8,19 +8,21 @@ import (
 	"path/filepath"
 	"strconv"
 	"time"
+	"github.com/schollz/progressbar/v3"
 )
 
 func main() {
 	inputDir, outputDir := "./input/", "./output/"
 
-	fmt.Printf("Input directory: %v\n", inputDir) // 入力ディレクトリ内の全てのファイルを取得
+	// 入力ディレクトリ内の全てのファイルを取得
 	files, err := os.ReadDir(inputDir)
 	if err != nil {
 		log.Fatalf("Failed to read input directory: %v", err)
 	}
 
-	fmt.Printf("Output directory: %v\n", outputDir) // outputDirが存在しない場合、ディレクトリを作成
-	if _, err := os.Stat(outputDir); os.IsNotExist(err) {
+	// outputDirが存在しない場合、ディレクトリを作成
+	_, err = os.Stat(outputDir)
+	if os.IsNotExist(err) {
 		err := os.Mkdir(outputDir, os.ModePerm)
 		if err != nil {
 			log.Fatalf("Failed to create output directory: %v", err)
@@ -46,26 +48,33 @@ func main() {
 	}
 
 	// 非可逆変換回数
-	maxIter := 1000
+	maxIter := 10
 	if len(os.Args) > 2 {
 		if os.Args[2] == "random" {
 			maxIter = 1 + int(time.Now().UnixNano()) % 1000
 		} else {
 			q, err := strconv.Atoi(os.Args[2])
 			if err == nil && q >= 1 && q <= 1000 {
-				log.Fatalf("Max iteration must be between 1 and 1000")
 				maxIter = q
+			} else {
+				log.Fatalf("Max iteration must be between 1 and 1000")
 			}
 		}
 	}
 
-	fmt.Printf("Quality: %v\n", quality)
-
 	for _, file := range files {
-		inputPath := filepath.Join(inputDir, file.Name())
+		inputPath  := filepath.Join(inputDir, file.Name())
 		outputPath := filepath.Join(outputDir, "image_"+time.Now().Format("20060102_150405")+".jpg")
 
-		fmt.Printf("Compressing %v with quality %v...\n", inputPath, quality)
+		log.Printf("Compressing %v with quality %v and %v iterations\n", file.Name(), quality, maxIter)
+
+		// プログレスバーの初期化
+		bar := progressbar.NewOptions(maxIter,
+			progressbar.OptionSetWidth(50),                // プログレスバーの幅
+			progressbar.OptionSetPredictTime(true),        // 残り時間の予測
+			progressbar.OptionSetDescription(file.Name()), // バーの前に表示する説明
+			progressbar.OptionSetRenderBlankState(true),   // 空の状態でも表示
+		)
 
 		// 画像をデコード
 		img, err := DecodeImage(inputPath, filepath.Ext(inputPath))
@@ -94,6 +103,14 @@ func main() {
 				
 				break
 			}
+
+			// プログレスバーを更新
+			err = bar.Add(1)
+			if err != nil {
+				fmt.Println("Failed to update progress bar", err)
+				
+				break
+			}
 		}
 
 		// 最終結果を保存
@@ -103,7 +120,6 @@ func main() {
 
 			continue
 		} else {
-			fmt.Printf("Image successfully compressed and saved as %v\n", outputPath)
 			log.Printf("Image successfully compressed and saved as %v", outputPath)
 		}
 	}
