@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    working_dir: /root
+    working_dir: /root/src
     volumes:
       - ./output:/root/src/output
     networks:

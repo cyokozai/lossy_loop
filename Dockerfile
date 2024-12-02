@@ -6,7 +6,7 @@ SHELL ["/bin/bash", "-c"]
 ARG lang="C"
 ARG dir="src"
 
-ENV DEBIAN_FRONTEND noninter active
+ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 ENV DISPLAY host.docker.internal:0.0
 ENV LANG ${lang}
@@ -18,8 +18,8 @@ WORKDIR /root/${dir}
 
 COPY ./${dir}/*.go /root/${dir}
 
-RUN apt -y update && apt -y upgrade && go mod download && go mod verify && go build -v -o lossyloop
+RUN apt -y update && apt -y upgrade && go mod init github.com/cyokozai/lossyloop && go mod tidy && go build -v -o lossyloop
 
-COPY ./input/ /root/${dir}/input/
+COPY ./input/* /root/${dir}/input/
 
-CMD ["lossyloop 90"]
+CMD ["./lossyloop", "90"]
