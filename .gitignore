@@ -29,3 +29,5 @@ go.work.sum
 output/*
 input/*
 !*/*test.*
+
+.DS_Store
